@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var wtController = TextEditingController();
   var ftController = TextEditingController();
   var inController = TextEditingController();
-  var result;
+  String result = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,28 +88,39 @@ class _MyHomePageState extends State<MyHomePage> {
                       var fT = ftController.text.toString();
                       var iN = inController.text.toString();
                       if (wT != "" && fT != "" && iN != "") {
-                        // Bmi calculation
+                        var iWT = int.parse(wT);
+                        var ifT = int.parse(fT);
+                        var iNT = int.parse(iN);
+
+                        var tInch = (ifT * 12) + iNT;
+                        var tCm = (tInch) * 2.54;
+                        var tM = tCm / 100;
+                        var bmi = iWT / (tM * tM);
+                        if (bmi > 25) {
+                          result = "You are Over Weight $bmi";
+                        } else if (bmi < 18) {
+                          result = "You are Under Weight $bmi";
+                        } else {
+                          result = "You are Healthy $bmi";
+                        }
+
+                        setState(() {});
                       } else {
                         setState(() {
-                          Fluttertoast.showToast(
-                              msg: 'Please fill All the feild',
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.red,
-                              textColor:
-                                  const Color.fromARGB(255, 221, 198, 197),
-                              fontSize: 16);
+                          result = "Fill all the feilds";
                         });
                       }
                     },
                     child: const Text('Calculate')),
+                const SizedBox(
+                  height: 17,
+                ),
                 Text(
                   result,
                   style: const TextStyle(
-                      fontSize: 23,
+                      fontSize: 17,
                       fontWeight: FontWeight.bold,
-                      color: Colors.amber),
+                      color: Colors.deepPurple),
                 )
               ],
             ),
